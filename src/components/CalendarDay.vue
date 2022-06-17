@@ -4,7 +4,18 @@
       <strong>{{ day.fullName }}</strong>
     </div>
     <div class="card-body">
-      <CalendarEvent v-for="event in day.events" :key="event.title" :event="event"/>
+      <CalendarEvent
+        v-for="event in day.events" :key="event.title"
+        :event="event"
+        :day="day">
+<!--        <template v-slot:eventPriority="slotProps">-->
+        <template #eventPriority="slotProps">
+          <h5>{{ slotProps.priorityDisplayName }}</h5>
+        </template>
+<!--        <template v-slot="slotProps"><i>{{ slotProps.event.title }}</i></template>-->
+<!--        <template v-slot="{ event: entry }"><i>{{ entry.title }}</i></template>-->
+        <template #default="{ event: entry }"><i>{{ entry.title }}</i></template>
+      </CalendarEvent>
     </div>
   </div>
 </template>
