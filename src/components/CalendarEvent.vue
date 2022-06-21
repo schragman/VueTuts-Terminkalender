@@ -25,7 +25,7 @@
           ref="newEventTitleInput"
           :placeholder="event.title"
           @input="setNewEventTitle($event)"/>
-        <select class="form-select mt-2" v-model="newEventPriority" @input="tryOut()">
+        <select class="form-select mt-2" v-model="newEventPriority">
           <option value="-1">Hoch</option>
           <option value="0">Mittel</option>
           <option value="1">Tief</option>
@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      newEventTitle: "A",
+      newEventTitle: "",
       newEventPriority: this.event.priority,
     }
   },
@@ -84,9 +84,6 @@ export default {
     },
     setNewEventTitle(event) {
       this.newEventTitle = event.target.value;
-    },
-    tryOut() {
-      this.newEventTitle += "Test";
     },
   }
 }

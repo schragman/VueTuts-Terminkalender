@@ -4,18 +4,30 @@
       <strong>{{ day.fullName }}</strong>
     </div>
     <div class="card-body">
-      <CalendarEvent
-        v-for="event in day.events" :key="event.title"
-        :event="event"
-        :day="day">
-<!--        <template v-slot:eventPriority="slotProps">-->
-        <template #eventPriority="slotProps">
-          <h5>{{ slotProps.priorityDisplayName }}</h5>
-        </template>
-<!--        <template v-slot="slotProps"><i>{{ slotProps.event.title }}</i></template>-->
-<!--        <template v-slot="{ event: entry }"><i>{{ entry.title }}</i></template>-->
-        <template #default="{ event: entry }"><i>{{ entry.title }}</i></template>
-      </CalendarEvent>
+      <transition name="fade" mode="out-in">
+        <!--      length=0 ergibt true-->
+        <div v-if="day.events.length">
+          <transition-group name="list">
+            <CalendarEvent
+              v-for="event in events" :key="event.title"
+              :event="event"
+              :day="day">
+      <!--        <template v-slot:eventPriority="slotProps">-->
+              <template #eventPriority="slotProps">
+                <h5>{{ slotProps.priorityDisplayName }}</h5>
+              </template>
+      <!--        <template v-slot="slotProps"><i>{{ slotProps.event.title }}</i></template>-->
+      <!--        <template v-slot="{ event: entry }"><i>{{ entry.title }}</i></template>-->
+              <template #default="{ event: entry }"><i>{{ entry.title }}</i></template>
+            </CalendarEvent>
+          </transition-group>
+        </div>
+        <div v-else>
+          <div class="alert alert-light text-center">
+            <i>Keine Termine</i>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -62,6 +74,9 @@ export default {
     cardHeaderClasses() {
       return this.day.id === Store.getters.activeDay().id ? ["bg-primary", "text-white"] : null;
     },
+    events() {
+      return Store.getters.events(this.day.id);
+    },
 
   },
   methods: {
@@ -73,5 +88,21 @@ export default {
 </script>
 
 <style scoped>
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .list-enter-to,
+  .list-leave-from {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 1s ease;
+  }
 
 </style>
