@@ -2,11 +2,13 @@ import { calendarWeekData} from "@/seed";
 import { reactive, readonly} from "vue";
 
 const state = reactive({
-  calendarWeekData
+  calendarWeekData,
+  activeView: "CalendarWeek"
 });
 
 const getters = {
-  activeDay: () => state.calendarWeekData.find((day) => day.active)
+  activeDay: () => state.calendarWeekData.find((day) => day.active),
+  activeView: () => state.activeView
 }
 
 const mutations = {
@@ -19,6 +21,9 @@ const mutations = {
     const dayObj = state.calendarWeekData.find((day) => day.id === dayId);
     const eventObj = dayObj.events.find((event) => event.title === eventTitle);
     eventObj.edit = true;
+  },
+  setActiveView(view) {
+    state.activeView = view;
   },
   updateEvent(dayId, oldEventTitle, newEvent) {
     newEvent.title = newEvent.title !== "" ? newEvent.title : oldEventTitle;
