@@ -105,4 +105,8 @@ export default {
     transition: all 1s ease;
   }
 
+  .list-move {
+    transition: transform 8s ease;
+  }
+
 </style>
