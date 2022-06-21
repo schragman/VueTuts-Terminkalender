@@ -16,12 +16,12 @@
       <div class="col-2 offset-2">
         <div class="float-end">
           <!-- Mit dem Button blenden wir die Calendar-Settings-Component ein bzw. aus. -->
-          <button class="btn btn-lg mb-2">
+          <button class="btn btn-lg mb-2" @click="fadeInOut">
             <i class="fas fa-cogs"></i>
           </button>
         </div>
         <!-- Anfang: Template für die Calendar-Settings-Component -->
-        <CalendarSettings/>
+        <CalendarSettings v-if="displaySettings" />
         <!-- Ende: Template für die Calendar-Day-Component -->
       </div>
     </div>
@@ -29,9 +29,10 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import CalendarWeek from "./components/CalendarWeek";
 import CalendarEntry from "@/components/CalendarEntry";
-import CalendarSettings from "@/components/CalendarSettings";
+//import CalendarSettings from "@/components/CalendarSettings";
 
 export default {
   name: "App",
@@ -42,8 +43,22 @@ export default {
     //Kurzform, wenn Tag-Name und Component-Name gleich sind
     CalendarWeek,
     CalendarEntry,
-    CalendarSettings
+    CalendarSettings: defineAsyncComponent(() =>
+      import(
+        /*webpackChunkName: 'CalenderSettingsComponent' */ "./components/CalendarSettings.vue")
+    )
+  },
+  data() {
+    return {
+      displaySettings: false
+    }
+  },
+  methods: {
+    fadeInOut() {
+      this.displaySettings = !this.displaySettings;
+    }
   }
+
 };
 </script>
 
